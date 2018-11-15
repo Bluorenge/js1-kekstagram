@@ -1,7 +1,7 @@
 # Личный проект «Кекстаграм» [![Build status][travis-image]][travis-url]
 
 * Студент: [Antony Meshkov](https://up.htmlacademy.ru/javascript/16/user/186573).
-* Наставник: `Неизвестно`.
+* Наставник: `undefined`.
 
 ---
 
