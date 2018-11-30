@@ -1,0 +1,95 @@
+'use strict';
+
+var QUANTITY_PHOTOS = 25;
+var COMMENTS = ['Всё отлично!', 'В целом всё неплохо. Но не всё.', 'Когда вы делаете фотографию, хорошо бы убирать палец из кадра. В конце концов это просто непрофессионально.', 'Моя бабушка случайно чихнула с фотоаппаратом в руках и у неё получилась фотография лучше.', 'Я поскользнулся на банановой кожуре и уронил фотоаппарат на кота и у меня получилась фотография лучше.', 'Лица у людей на фотке перекошены, как будто их избивают. Как можно было поймать такой неудачный момент?!'];
+var DESCRIPTION = ['Тестим новую камеру!', 'Затусили с друзьями на море', 'Как же круто тут кормят', 'Отдыхаем...', 'Цените каждое мгновенье. Цените тех, кто рядом с вами и отгоняйте все сомненья. Не обижайте всех словами......', 'Вот это тачка!'];
+
+var pictureTemplate = document.querySelector('#picture').content.querySelector('.picture');
+var simularPicture = document.querySelector('.pictures');
+var bigPicture = document.querySelector('.big-picture');
+
+// Получение случайного числа
+function getRandomNumber(min, max) {
+  var rand = min - 0.5 + Math.random() * (max - min + 1);
+  rand = Math.round(rand);
+  return rand;
+}
+
+// Получение случайного элемента массива
+function getRandomElement(array) {
+  var numGenerator = Math.round(Math.random() * (array.length - 1));
+
+  return array[numGenerator];
+}
+
+// Создание объекта с характеристиками персонажа
+function generateObject() {
+  var object = {
+    url: 'photos/' + getRandomNumber(1, 25) + '.jpg',
+    likes: getRandomNumber(15, 200),
+    comments: getRandomElement(COMMENTS),
+    description: getRandomElement(DESCRIPTION)
+  };
+
+  return object;
+}
+
+// Создание массива с нужным количеством разных персонажей
+function createArray() {
+  var array = [];
+  for (var i = 0; i < QUANTITY_PHOTOS; i++) {
+    array[i] = generateObject();
+  }
+
+  return array;
+}
+
+// Создание массива с нужным количеством разных персонажей
+function createArrayComment() {
+  var array = [];
+  for (var i = 0; i < QUANTITY_PHOTOS; i++) {
+    array[i] = generateObject();
+  }
+
+  return array;
+}
+
+// Создание DOM-элемента на основе JS-объекта
+function createPicture(picture) {
+  var pictureElement = pictureTemplate.cloneNode(true);
+
+  var pictureImg = pictureElement.querySelector('.picture__img');
+  var pictureComments = pictureElement.querySelector('.picture__comments');
+  var pictureLikes = pictureElement.querySelector('.picture__likes');
+
+  pictureImg.src = picture.url;
+  pictureComments.textContent = picture.likes;
+  pictureLikes.textContent = picture.comments;
+
+  return pictureElement;
+}
+
+function fillBigPicture(picture) {
+  var bigPictureImage = document.querySelector('.big-picture__img > img');
+  var bigPictureLikes = document.querySelector('.likes-count');
+  var bigPictureComments = document.querySelector('.comments-count');
+
+  bigPictureImage.src = picture.url;
+  bigPictureLikes.textContent = picture.likes;
+  bigPictureComments.textContent = picture.comments;
+}
+
+// Заполнение блока DOM-элементами на основе массива JS-объектов
+function generatePicture(array) {
+  var fragment = document.createDocumentFragment();
+  for (var i = 0; i < array.length; i++) {
+    fragment.appendChild(createPicture(array[i]));
+  }
+  simularPicture.appendChild(fragment);
+}
+
+// Код программы
+bigPicture.classList.remove('hidden');
+var picturesArray = createArray();
+generatePicture(picturesArray);
+fillBigPicture(picturesArray[0]);
