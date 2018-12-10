@@ -34,7 +34,97 @@ var effectLevelValue = document.querySelector('.effect-level__value');
 
 var effectLevelRange = document.querySelector('.img-upload__effect-level');
 
+var hashtagsInput = document.querySelector('input[name=hashtags]');
+
 // Функции
+// Получение случайного числа
+var getRandomNumber = function (min, max) {
+  var rand = min - 0.5 + Math.random() * (max - min + 1);
+  rand = Math.round(rand);
+  return rand;
+};
+
+// Получение случайного элемента массива
+var getRandomElement = function (array) {
+  var numGenerator = Math.round(Math.random() * (array.length - 1));
+
+  return array[numGenerator];
+};
+
+// Удаление потомков элемента
+var removeAllChildren = function (element) {
+  var childList = element.childNodes;
+  for (var i = 0; i < childList.length; i++) {
+    element.removeChild(childList[i]);
+  }
+};
+
+// Генерация массива с последовательными числами
+var generateRange = function (min, max, step) {
+  var range = [];
+  for (var i = min; i <= max; i += step) {
+    range.push(i);
+  }
+
+  return range;
+};
+
+// Перемешивание элементов массива случайным образом
+var randomizeArray = function (arr) {
+  var arrLength = arr.length;
+  var newArr = [];
+  for (var i = 0; i < arrLength; i++) {
+    var index = Math.floor(Math.random() * arr.length);
+    newArr.push(arr[index]);
+    arr.splice(index, 1);
+  }
+
+  return newArr;
+};
+
+// Проверка отсутствия повторов в массиве
+var checkRepeats = function (arr) {
+  var arrLowerCase = [];
+  for (var i = 0; i < arr.length; i++) {
+    arrLowerCase.push(arr[i].toLowerCase());
+    var place = arrLowerCase.indexOf(arrLowerCase[i]);
+    if (place !== i) {
+      return false;
+    }
+  }
+  return true;
+};
+
+// Проверка хештегов
+var validateHashtags = function (input) {
+  var hashtags = input.value;
+  if (hashtags === '') {
+    input.setCustomValidity('');
+    return;
+  }
+  var hashtagsList = hashtags.split(' ');
+  if (hashtagsList.length > 5) {
+    input.setCustomValidity('Нельзя использовать больше 5 хэш-тегов');
+  } else if (!checkRepeats(hashtagsList)) {
+    input.setCustomValidity('Хэш-теги не должны повторяться. Хэш-теги нечувствительны к регистру. #ХэшТег и #хэштег, один и тот же тег');
+  } else {
+    for (var i = 0; i < hashtagsList.length; i++) {
+      if (hashtagsList[i].charAt(0) !== '#') {
+        input.setCustomValidity('Хэш-тег должен начинаться с символа решетки. На то он и хэш-тег');
+      } else if (hashtagsList[i].substring(1).indexOf('#') !== -1) {
+        input.setCustomValidity('Хэш-теги должны разделяться пробелами');
+      } else if (hashtagsList[i].length < 2) {
+        input.setCustomValidity('Хэш-тег не может быть короче 2 символов');
+      } else if (hashtagsList[i].length > 20) {
+        input.setCustomValidity('Хэш-тег не может быть длиннее 20 символов');
+      } else {
+        input.setCustomValidity('');
+      }
+    }
+  }
+  return;
+};
+
 // Позиция пина
 var setPositionPin = function (currentPosition) {
   if (currentPosition > 100 || currentPosition < 0) {
@@ -139,51 +229,6 @@ var openPopupBigPicture = function () {
 var closePopupBigPicture = function () {
   bigPicture.classList.add('hidden');
   removeAllChildren(commentsList);
-};
-
-// Удаление потомков элемента
-var removeAllChildren = function (element) {
-  var childList = element.childNodes;
-  for (var i = 0; i < childList.length; i++) {
-    element.removeChild(childList[i]);
-  }
-};
-
-// Получение случайного числа
-var getRandomNumber = function (min, max) {
-  var rand = min - 0.5 + Math.random() * (max - min + 1);
-  rand = Math.round(rand);
-  return rand;
-};
-
-// Получение случайного элемента массива
-var getRandomElement = function (array) {
-  var numGenerator = Math.round(Math.random() * (array.length - 1));
-
-  return array[numGenerator];
-};
-
-// Генерация массива с последовательными числами
-var generateRange = function (min, max, step) {
-  var range = [];
-  for (var i = min; i <= max; i += step) {
-    range.push(i);
-  }
-
-  return range;
-};
-
-// Перемешивание элементов массива случайным образом
-var randomizeArray = function (arr) {
-  var arrLength = arr.length;
-  var newArr = [];
-  for (var i = 0; i < arrLength; i++) {
-    var index = Math.floor(Math.random() * arr.length);
-    newArr.push(arr[index]);
-    arr.splice(index, 1);
-  }
-
-  return newArr;
 };
 
 // Создание массива с нужным количеством характеристик фотографий
@@ -342,4 +387,9 @@ uploadOverlayClose.addEventListener('keydown', function (evt) {
   if (evt.keyCode === ENTER_KEYCODE) {
     closePopup();
   }
+});
+
+// Обработчик
+hashtagsInput.addEventListener('blur', function () {
+  validateHashtags(hashtagsInput);
 });
