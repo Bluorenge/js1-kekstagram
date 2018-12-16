@@ -148,6 +148,7 @@ var scalePinMousedownHandler = function (evt) {
 
     var position = (effectLevelPin.offsetLeft - shift) * 100 / 453;
     setPositionPin(position);
+    effectsPreview();
   };
 
   var mouseUpHandler = function (upEvt) {
@@ -346,11 +347,6 @@ simularPicture.addEventListener('click', function (evt) {
 
 // Обработчик на пин
 effectLevelPin.addEventListener('mousedown', scalePinMousedownHandler);
-
-// Обработчик интенсивности эффектов
-effectLevelPin.addEventListener('mouseup', function () {
-  effectsPreview();
-});
 
 // Скрытие слайдера интенсивности эффектов
 effectLevelRange.classList.add('hidden');
