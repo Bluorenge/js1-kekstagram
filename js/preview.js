@@ -8,17 +8,17 @@
   var commentsCount = document.querySelector('.comment-current-count');
 
   // Создание комментариев к фотографии
-  var createComments = function (comment) {
-    var commentInList = document.querySelector('#comment').content.querySelector('.social__comment');
-    var commentElement = commentInList.cloneNode(true);
+  var createComments = function (comments) {
+    var commentTemplate = document.querySelector('#comment').content.querySelector('.social__comment');
+    var comment = commentTemplate.cloneNode(true);
 
-    var commentPicture = commentElement.querySelector('.social__picture');
-    var commentMessage = commentElement.querySelector('.social__text');
+    var commentPicture = comment.querySelector('.social__picture');
+    var commentMessage = comment.querySelector('.social__text');
 
-    commentPicture.src = comment.avatar;
-    commentMessage.textContent = comment.message;
+    commentPicture.src = comments.avatar;
+    commentMessage.textContent = comments.message;
 
-    return commentElement;
+    return comment;
   };
 
   // Экспортированные значения
@@ -36,17 +36,17 @@
 
     var totalCommentsQuanity = picture.comments.length;
     var currentCommentsQuanity = 0;
-    var commentsLoaderHandler = function () {
+    var onCommentsLoaderClick = function () {
       loadMoreComments();
     };
 
     var loadMoreComments = function () {
-      var commentElement;
+      var comment;
       var commentsNumber = Math.min(COMMENTS_STEP, totalCommentsQuanity - currentCommentsQuanity);
 
       for (var i = 0; i < commentsNumber; i++) {
-        commentElement = createComments(picture.comments[i]);
-        window.utils.commentsList.appendChild(commentElement);
+        comment = createComments(picture.comments[i]);
+        window.utils.commentsList.appendChild(comment);
       }
       currentCommentsQuanity += i;
 
@@ -54,14 +54,14 @@
       commentsCount.textContent = currentCommentsQuanity;
 
       if (currentCommentsQuanity >= totalCommentsQuanity) {
-        commentsLoader.removeEventListener('click', commentsLoaderHandler);
+        commentsLoader.removeEventListener('click', onCommentsLoaderClick);
         commentsLoader.classList.add('hidden');
       }
 
     };
 
     window.utils.commentsList.innerHTML = '';
-    commentsLoader.addEventListener('click', commentsLoaderHandler);
+    commentsLoader.addEventListener('click', onCommentsLoaderClick);
     commentsLoader.classList.remove('hidden');
 
     loadMoreComments();

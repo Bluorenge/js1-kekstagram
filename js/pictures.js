@@ -6,9 +6,14 @@
   var bigPictureCancel = document.querySelector('.big-picture__cancel');
 
   // Функции
+  // Удаление всех потомков элемента
+  var removeAllChildren = function (element) {
+    while (element.firstChild) {
+      element.removeChild(element.firstChild);
+    }
+  };
   // Открытие/закрытия попапа большого фото
   var onPopupEscPressBigPicture = function (evt) {
-
     window.utils.isEscEvent(evt, closePopupBigPicture);
   };
 
@@ -19,30 +24,30 @@
   };
 
   var closePopupBigPicture = function () {
-    window.utils.removeAllChildren(window.utils.commentsList);
+    removeAllChildren(window.utils.commentsList);
     window.utils.bodyTag.classList.remove('modal-open');
     bigPicture.classList.add('hidden');
   };
 
   // Экспортированные значения
   // Создание DOM-элемента маленькой фотографии на основе JS-объекта
-  window.createPicture = function (picture) {
-    var pictureElement = pictureTemplate.cloneNode(true);
+  window.createPicture = function (pictures) {
+    var picture = pictureTemplate.cloneNode(true);
 
-    var pictureImg = pictureElement.querySelector('.picture__img');
-    var pictureLikes = pictureElement.querySelector('.picture__likes');
-    var pictureComments = pictureElement.querySelector('.picture__comments');
+    var pictureImg = picture.querySelector('.picture__img');
+    var pictureLikes = picture.querySelector('.picture__likes');
+    var pictureComments = picture.querySelector('.picture__comments');
 
-    pictureElement.id = picture.url;
-    pictureImg.src = picture.url;
-    pictureLikes.textContent = picture.likes;
-    pictureComments.textContent = picture.comments.length;
+    picture.id = pictures.url;
+    pictureImg.src = pictures.url;
+    pictureLikes.textContent = pictures.likes;
+    pictureComments.textContent = pictures.comments.length;
 
-    pictureElement.addEventListener('click', function () {
+    picture.addEventListener('click', function () {
       openPopupBigPicture();
     });
 
-    pictureElement.addEventListener('keydown', function (evt) {
+    picture.addEventListener('keydown', function (evt) {
       window.utils.isEnterEvent(evt, openPopupBigPicture);
     });
 
@@ -50,6 +55,6 @@
       closePopupBigPicture();
     });
 
-    return pictureElement;
+    return picture;
   };
 })();

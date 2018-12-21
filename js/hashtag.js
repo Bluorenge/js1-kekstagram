@@ -5,6 +5,19 @@
   var errorInputBorder = 'border: 5px solid red;';
 
   // Функции
+  // Проверка отсутствия повторов в массиве
+  var checkRepeats = function (array) {
+    var arrLowerCase = [];
+    for (var i = 0; i < array.length; i++) {
+      arrLowerCase.push(array[i].toLowerCase());
+      var place = arrLowerCase.indexOf(arrLowerCase[i]);
+      if (place !== i) {
+        return false;
+      }
+    }
+    return true;
+  };
+
   // Проверка хештегов
   var validateHashtags = function (input) {
     var hashtags = input.value;
@@ -16,7 +29,7 @@
     if (hashtagsList.length > 5) {
       input.style = errorInputBorder;
       input.setCustomValidity('Нельзя использовать больше 5 хэш-тегов');
-    } else if (!window.utils.checkRepeats(hashtagsList)) {
+    } else if (!checkRepeats(hashtagsList)) {
       input.style = errorInputBorder;
       input.setCustomValidity('Хэш-теги не должны повторяться. Хэш-теги нечувствительны к регистру. #ХэшТег и #хэштег, один и тот же тег');
     } else {

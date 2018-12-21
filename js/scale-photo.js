@@ -9,6 +9,7 @@
   var scaleSmaller = document.querySelector('.scale__control--smaller');
   var scaleBigger = document.querySelector('.scale__control--bigger');
   var scaleValueInput = document.querySelector('.scale__control--value');
+  var picturePreview = document.querySelector('.img-upload__preview');
 
   var createScaleClick = function (scaleValue) {
     return function () {
@@ -16,26 +17,26 @@
 
       if (currentScale >= MIN_VALUE && currentScale <= MAX_VALUE) {
         scaleValueInput.value = currentScale + '%';
-        window.utils.imgPreview.style.transform = 'scale(' + currentScale / 100 + ')';
+        picturePreview.style.transform = 'scale(' + currentScale / 100 + ')';
       }
     };
   };
 
-  var scalelBiggerClick = createScaleClick(STEP_SCALE);
-  var scaleSmallerClick = createScaleClick(-STEP_SCALE);
+  var onScalelBiggerClick = createScaleClick(STEP_SCALE);
+  var onScaleSmallerClick = createScaleClick(-STEP_SCALE);
 
   // Экспортированные значения
-  window.popupScale = {
+  window.scalePhoto = {
     activate: function () {
       scaleValueInput.value = MAX_VALUE + '%';
-      window.utils.imgPreview.style.transform = 'scale(' + MAX_VALUE / 100 + ')';
+      picturePreview.style.transform = 'scale(' + MAX_VALUE / 100 + ')';
 
-      scaleBigger.addEventListener('click', scalelBiggerClick);
-      scaleSmaller.addEventListener('click', scaleSmallerClick);
+      scaleBigger.addEventListener('click', onScalelBiggerClick);
+      scaleSmaller.addEventListener('click', onScaleSmallerClick);
     },
     deactivate: function () {
-      scaleBigger.removeEventListener('click', scalelBiggerClick);
-      scaleSmaller.removeEventListener('click', scaleSmallerClick);
+      scaleBigger.removeEventListener('click', onScalelBiggerClick);
+      scaleSmaller.removeEventListener('click', onScaleSmallerClick);
     }
   };
 })();

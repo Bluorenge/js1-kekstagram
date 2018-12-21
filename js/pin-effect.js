@@ -7,11 +7,11 @@
 
   // Функции
   // Перемещение пина
-  var scalePinMousedownHandler = function (evt) {
+  var onPinMousedown = function (evt) {
     evt.preventDefault();
     var startCoordX = evt.clientX;
 
-    var mouseMoveHandler = function (moveEvt) {
+    var onMouseMove = function (moveEvt) {
       moveEvt.preventDefault();
 
       var shift = startCoordX - moveEvt.clientX;
@@ -22,36 +22,36 @@
       selectEffectsPreview();
     };
 
-    var mouseUpHandler = function (upEvt) {
+    var onMouseUp = function (upEvt) {
       upEvt.preventDefault();
 
-      document.removeEventListener('mousemove', mouseMoveHandler);
-      document.removeEventListener('mouseup', mouseUpHandler);
+      document.removeEventListener('mousemove', onMouseMove);
+      document.removeEventListener('mouseup', onMouseUp);
     };
 
-    document.addEventListener('mousemove', mouseMoveHandler);
-    document.addEventListener('mouseup', mouseUpHandler);
+    document.addEventListener('mousemove', onMouseMove);
+    document.addEventListener('mouseup', onMouseUp);
   };
 
   // Генерация эффектов
   var selectEffectsPreview = function () {
-    if (window.utils.imgPreviewImg.classList.contains('effects__preview--chrome')) {
-      window.utils.imgPreviewImg.style.filter = 'grayscale(' + effectLevelValue.value / 100 + ')';
-    } else if (window.utils.imgPreviewImg.classList.contains('effects__preview--sepia')) {
-      window.utils.imgPreviewImg.style.filter = 'sepia(' + effectLevelValue.value / 100 + ')';
-    } else if (window.utils.imgPreviewImg.classList.contains('effects__preview--marvin')) {
-      window.utils.imgPreviewImg.style.filter = 'invert(' + 100 * effectLevelValue.value / 100 + '%)';
-    } else if (window.utils.imgPreviewImg.classList.contains('effects__preview--phobos')) {
-      window.utils.imgPreviewImg.style.filter = 'blur(' + 3 * effectLevelValue.value / 100 + 'px)';
-    } else if (window.utils.imgPreviewImg.classList.contains('effects__preview--heat')) {
-      window.utils.imgPreviewImg.style.filter = 'brightness(' + ((2 * effectLevelValue.value / 100) + 1) + ')';
+    if (window.utils.picturePreviewImg.classList.contains('effects__preview--chrome')) {
+      window.utils.picturePreviewImg.style.filter = 'grayscale(' + effectLevelValue.value / 100 + ')';
+    } else if (window.utils.picturePreviewImg.classList.contains('effects__preview--sepia')) {
+      window.utils.picturePreviewImg.style.filter = 'sepia(' + effectLevelValue.value / 100 + ')';
+    } else if (window.utils.picturePreviewImg.classList.contains('effects__preview--marvin')) {
+      window.utils.picturePreviewImg.style.filter = 'invert(' + 100 * effectLevelValue.value / 100 + '%)';
+    } else if (window.utils.picturePreviewImg.classList.contains('effects__preview--phobos')) {
+      window.utils.picturePreviewImg.style.filter = 'blur(' + 3 * effectLevelValue.value / 100 + 'px)';
+    } else if (window.utils.picturePreviewImg.classList.contains('effects__preview--heat')) {
+      window.utils.picturePreviewImg.style.filter = 'brightness(' + ((2 * effectLevelValue.value / 100) + 1) + ')';
     } else {
-      window.utils.imgPreviewImg.style.filter = '';
+      window.utils.picturePreviewImg.style.filter = '';
     }
   };
 
   // Обработчик на пин
-  effectLevelPin.addEventListener('mousedown', scalePinMousedownHandler);
+  effectLevelPin.addEventListener('mousedown', onPinMousedown);
 
   // Экспортированные значения
   // Позиция пина
