@@ -8,46 +8,48 @@
   // Функции
   // Открытие/закрытия попапа большого фото
   var onPopupEscPressBigPicture = function (evt) {
+
     window.utils.isEscEvent(evt, closePopupBigPicture);
   };
 
   var openPopupBigPicture = function () {
     bigPicture.classList.remove('hidden');
+    window.utils.bodyTag.classList.add('modal-open');
     document.addEventListener('keydown', onPopupEscPressBigPicture);
   };
 
   var closePopupBigPicture = function () {
     window.utils.removeAllChildren(window.utils.commentsList);
+    window.utils.bodyTag.classList.remove('modal-open');
     bigPicture.classList.add('hidden');
   };
 
-  window.pictures = {
-    // Создание DOM-элемента маленькой фотографии на основе JS-объекта
-    createPicture: function (picture) {
-      var pictureElement = pictureTemplate.cloneNode(true);
+  // Экспортированные значения
+  // Создание DOM-элемента маленькой фотографии на основе JS-объекта
+  window.createPicture = function (picture) {
+    var pictureElement = pictureTemplate.cloneNode(true);
 
-      var pictureImg = pictureElement.querySelector('.picture__img');
-      var pictureLikes = pictureElement.querySelector('.picture__likes');
-      var pictureComments = pictureElement.querySelector('.picture__comments');
+    var pictureImg = pictureElement.querySelector('.picture__img');
+    var pictureLikes = pictureElement.querySelector('.picture__likes');
+    var pictureComments = pictureElement.querySelector('.picture__comments');
 
-      pictureElement.id = picture.url;
-      pictureImg.src = picture.url;
-      pictureLikes.textContent = picture.likes;
-      pictureComments.textContent = picture.comments.length;
+    pictureElement.id = picture.url;
+    pictureImg.src = picture.url;
+    pictureLikes.textContent = picture.likes;
+    pictureComments.textContent = picture.comments.length;
 
-      pictureElement.addEventListener('click', function () {
-        openPopupBigPicture();
-      });
+    pictureElement.addEventListener('click', function () {
+      openPopupBigPicture();
+    });
 
-      pictureElement.addEventListener('keydown', function (evt) {
-        window.utils.isEnterEvent(evt, openPopupBigPicture);
-      });
+    pictureElement.addEventListener('keydown', function (evt) {
+      window.utils.isEnterEvent(evt, openPopupBigPicture);
+    });
 
-      bigPictureCancel.addEventListener('click', function () {
-        closePopupBigPicture();
-      });
+    bigPictureCancel.addEventListener('click', function () {
+      closePopupBigPicture();
+    });
 
-      return pictureElement;
-    }
+    return pictureElement;
   };
 })();

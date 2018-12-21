@@ -1,9 +1,17 @@
 'use strict';
 (function () {
+  // Константы
   var ESC_KEYCODE = 27;
   var ENTER_KEYCODE = 13;
 
+  // Переменные
+  var imgPreview = document.querySelector('.img-upload__preview');
+
+  // Экспортированные значения
   window.utils = {
+    bodyTag: document.querySelector('body'),
+    imgPreview: document.querySelector('.img-upload__preview'),
+    imgPreviewImg: imgPreview.querySelector('img'),
     commentsList: document.querySelector('.social__comments'),
     // Нажатие на Esc
     isEscEvent: function (evt, action) {
@@ -31,45 +39,11 @@
         element.removeChild(element.firstChild);
       }
     },
-    // Получение случайного числа
-    getRandomNumber: function (min, max) {
-      var rand = min - 0.5 + Math.random() * (max - min + 1);
-      rand = Math.round(rand);
-
-      return rand;
-    },
-    // Получение случайного элемента массива
-    getRandomElement: function (array) {
-      var numGenerator = Math.round(Math.random() * (array.length - 1));
-
-      return array[numGenerator];
-    },
-    // Генерация массива с последовательными числами
-    generateRange: function (min, max, step) {
-      var range = [];
-      for (var i = min; i <= max; i += step) {
-        range.push(i);
-      }
-
-      return range;
-    },
-    // Перемешивание элементов массива случайным образом
-    randomizeArray: function (arr) {
-      var arrLength = arr.length;
-      var newArr = [];
-      for (var i = 0; i < arrLength; i++) {
-        var index = Math.floor(Math.random() * arr.length);
-        newArr.push(arr[index]);
-        arr.splice(index, 1);
-      }
-
-      return newArr;
-    },
     // Проверка отсутствия повторов в массиве
-    checkRepeats: function (arr) {
+    checkRepeats: function (array) {
       var arrLowerCase = [];
-      for (var i = 0; i < arr.length; i++) {
-        arrLowerCase.push(arr[i].toLowerCase());
+      for (var i = 0; i < array.length; i++) {
+        arrLowerCase.push(array[i].toLowerCase());
         var place = arrLowerCase.indexOf(arrLowerCase[i]);
         if (place !== i) {
           return false;

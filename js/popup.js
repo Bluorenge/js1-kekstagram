@@ -7,8 +7,8 @@
   var form = document.querySelector('#upload-select-image');
   var effectsList = document.querySelector('.effects__list');
   var effectLevelRange = document.querySelector('.img-upload__effect-level');
+  var textInput = document.querySelector('textarea[name=description]');
 
-  var picturesContainer = document.querySelector('main');
   var popupSuccessTemplate = document.querySelector('#success');
   var popupFailedTemplate = document.querySelector('#error');
 
@@ -20,27 +20,36 @@
 
   var openPopup = function () {
     uploadOverlay.classList.remove('hidden');
+    window.utils.bodyTag.classList.add('modal-open');
+    window.popupScale.activate();
     document.addEventListener('keydown', onPopupEscPress);
   };
 
   var closePopup = function () {
     uploadOverlay.classList.add('hidden');
+    window.utils.bodyTag.classList.remove('modal-open');
     addEffect('none');
     form.reset();
     effectRangeHidden();
+    window.popupScale.deactivate();
+    document.removeEventListener('keydown', onPopupEscPress);
+  };
+
+  // Удаление обработчика при фокусе
+  var inputFocusInHandler = function () {
     document.removeEventListener('keydown', onPopupEscPress);
   };
 
   // Добавление класса, соответсвующего эффекту
   var addEffect = function (effect) {
-    window.pin.imgPreviewImg.classList.remove(window.pin.imgPreviewImg.classList.item(0));
-    window.pin.imgPreviewImg.style.filter = '';
-    window.pin.imgPreviewImg.classList.add('effects__preview--' + effect);
+    window.utils.imgPreviewImg.classList.remove(window.utils.imgPreviewImg.classList.item(0));
+    window.utils.imgPreviewImg.style.filter = '';
+    window.utils.imgPreviewImg.classList.add('effects__preview--' + effect);
   };
 
   // Скрытие фильтра при выборе оригинального изображения
   var effectRangeHidden = function () {
-    if (window.pin.imgPreviewImg.classList.contains('effects__preview--none')) {
+    if (window.utils.imgPreviewImg.classList.contains('effects__preview--none')) {
       effectLevelRange.classList.add('hidden');
     } else {
       effectLevelRange.classList.remove('hidden');
@@ -59,7 +68,7 @@
       };
 
       var deletePopup = function () {
-        picturesContainer.removeChild(popupElement);
+        window.utils.bodyTag.removeChild(popupElement);
         popupButtonElements.forEach(function (buttonElement) {
           buttonElement.removeEventListener('click', popupButtonClickHandler);
         });
@@ -79,7 +88,7 @@
 
       document.addEventListener('keydown', onPopupEscPressMessage);
       document.addEventListener('click', clickNotToPopup);
-      picturesContainer.appendChild(popupElement);
+      window.utils.bodyTag.appendChild(popupElement);
     };
   };
 
@@ -97,9 +106,15 @@
   effectsList.addEventListener('click', function (evt) {
     if (evt.target.nodeName === 'INPUT') {
       addEffect(evt.target.value);
-      window.pin.setPositionPin(100);
+      window.setPositionPin(100);
     }
     effectRangeHidden();
+  });
+
+  // Обработчик на текстовое поле
+  textInput.addEventListener('focusin', inputFocusInHandler);
+  textInput.addEventListener('focusout', function () {
+    document.addEventListener('keydown', onPopupEscPress);
   });
 
   // Обработчики кнопки загрузки файла
