@@ -17,6 +17,14 @@
         action();
       }
     },
+    isClickNotToElement: function (popupElement, closePopup) {
+      return function (evt) {
+        evt.stopPropagation();
+        if (evt.target === popupElement) {
+          closePopup(popupElement);
+        }
+      };
+    },
     // Удаление всех потомков элемента
     removeAllChildren: function (element) {
       while (element.firstChild) {
