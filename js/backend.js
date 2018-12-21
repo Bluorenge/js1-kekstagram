@@ -1,4 +1,5 @@
 'use strict';
+// Экспортированные значения
 // Получение и отправка данных на сервер
 window.backend = (function () {
   return {
@@ -21,7 +22,7 @@ window.backend = (function () {
         onError('Запрос не успел выполниться за ' + xhr.timeout + 'мс');
       });
 
-      xhr.timeout = 10000; // 10s
+      xhr.timeout = 20000; // 20s
 
       xhr.open('GET', URL);
       xhr.send();
