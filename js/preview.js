@@ -1,6 +1,9 @@
 'use strict';
 (function () {
-  // Функции
+  var COMMENTS_STEP = 5;
+  var commentsLoader = document.querySelector('.comments-loader');
+  var commentsCount = document.querySelector('.comment-current-count');
+
   // Создание комментариев к фотографии
   var createComments = function (comment) {
     var commentInList = document.querySelector('#comment').content.querySelector('.social__comment');
@@ -14,23 +17,50 @@
 
     return commentElement;
   };
-
   window.preview = {
-  // Создание DOM-элемента большой фотографии на основе JS-объекта
+    // Создание DOM-элемента большой фотографии на основе JS-объекта
     fillBigPicture: function (picture) {
       var bigPictureImage = document.querySelector('.big-picture__img > img');
-      var bigPictureAuthorImg = document.querySelector('.social__header > .social__picture');
       var bigPictureLikes = document.querySelector('.likes-count');
       var bigPictureDescription = document.querySelector('.social__caption');
       var bigPictureCommentsCount = document.querySelector('.comments-count');
 
       bigPictureImage.src = picture.url;
-      bigPictureAuthorImg.src = picture.comments[1].avatar;
       bigPictureLikes.textContent = picture.likes;
       bigPictureDescription.textContent = picture.description;
       bigPictureCommentsCount.textContent = picture.comments.length;
 
-      window.utils.generateElements(picture.comments, createComments, window.pictures.commentsList);
+      var totalCommentsQuanity = picture.comments.length;
+      var currentCommentsQuanity = 0;
+      var commentsLoaderHandler = function () {
+        loadMoreComments();
+      };
+
+      var loadMoreComments = function () {
+        var commentElement;
+        var commentsNumber = Math.min(COMMENTS_STEP, totalCommentsQuanity - currentCommentsQuanity);
+
+        for (var i = 0; i < commentsNumber; i++) {
+          commentElement = createComments(picture.comments[i]);
+          window.utils.commentsList.appendChild(commentElement);
+        }
+        currentCommentsQuanity += i;
+
+        commentsCount.innerHTML = '';
+        commentsCount.textContent = currentCommentsQuanity;
+
+        if (currentCommentsQuanity >= totalCommentsQuanity) {
+          commentsLoader.removeEventListener('click', commentsLoaderHandler);
+          commentsLoader.classList.add('hidden');
+        }
+
+      };
+
+      window.utils.commentsList.innerHTML = '';
+      commentsLoader.addEventListener('click', commentsLoaderHandler);
+      commentsLoader.classList.remove('hidden');
+
+      loadMoreComments();
     }
   };
 })();

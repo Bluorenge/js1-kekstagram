@@ -17,8 +17,8 @@
   };
 
   var closePopupBigPicture = function () {
+    window.utils.removeAllChildren(window.utils.commentsList);
     bigPicture.classList.add('hidden');
-    window.utils.removeAllChildren(window.pictures.commentsList);
   };
 
   window.pictures = {
@@ -30,7 +30,7 @@
       var pictureLikes = pictureElement.querySelector('.picture__likes');
       var pictureComments = pictureElement.querySelector('.picture__comments');
 
-      pictureElement.id = picture.id;
+      pictureElement.id = picture.url;
       pictureImg.src = picture.url;
       pictureLikes.textContent = picture.likes;
       pictureComments.textContent = picture.comments.length;
@@ -48,7 +48,6 @@
       });
 
       return pictureElement;
-    },
-    commentsList: document.querySelector('.social__comments')
+    }
   };
 })();

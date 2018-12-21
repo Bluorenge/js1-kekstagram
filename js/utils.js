@@ -4,6 +4,7 @@
   var ENTER_KEYCODE = 13;
 
   window.utils = {
+    commentsList: document.querySelector('.social__comments'),
     // Нажатие на Esc
     isEscEvent: function (evt, action) {
       if (evt.keyCode === ESC_KEYCODE) {
