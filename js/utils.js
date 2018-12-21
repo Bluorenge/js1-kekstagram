@@ -4,6 +4,7 @@
   var ENTER_KEYCODE = 13;
 
   window.utils = {
+    commentsList: document.querySelector('.social__comments'),
     // Нажатие на Esc
     isEscEvent: function (evt, action) {
       if (evt.keyCode === ESC_KEYCODE) {
@@ -15,6 +16,14 @@
       if (evt.keyCode === ENTER_KEYCODE) {
         action();
       }
+    },
+    isClickNotToElement: function (popupElement, closePopup) {
+      return function (evt) {
+        evt.stopPropagation();
+        if (evt.target === popupElement) {
+          closePopup(popupElement);
+        }
+      };
     },
     // Удаление всех потомков элемента
     removeAllChildren: function (element) {
