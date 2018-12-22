@@ -1,5 +1,10 @@
 'use strict';
 (function () {
+  // Константы
+  var HASHTAGS_MAX_QUANITY = 5;
+  var HASHTAG_LENGTH_MIN = 2;
+  var HASHTAG_LENGTH_MAX = 20;
+
   // Переменные
   var hashtagsInput = document.querySelector('input[name=hashtags]');
   var errorInputBorder = 'border: 5px solid red;';
@@ -26,7 +31,7 @@
       return;
     }
     var hashtagsList = hashtags.split(' ');
-    if (hashtagsList.length > 5) {
+    if (hashtagsList.length > HASHTAGS_MAX_QUANITY) {
       input.style = errorInputBorder;
       input.setCustomValidity('Нельзя использовать больше 5 хэш-тегов');
     } else if (!checkRepeats(hashtagsList)) {
@@ -40,10 +45,10 @@
         } else if (hashtagsList[i].substring(1).indexOf('#') !== -1) {
           input.style = errorInputBorder;
           input.setCustomValidity('Хэш-теги должны разделяться пробелами');
-        } else if (hashtagsList[i].length < 2) {
+        } else if (hashtagsList[i].length < HASHTAG_LENGTH_MIN) {
           input.style = errorInputBorder;
           input.setCustomValidity('Хэш-тег не может быть короче 2 символов');
-        } else if (hashtagsList[i].length > 20) {
+        } else if (hashtagsList[i].length > HASHTAG_LENGTH_MAX) {
           input.style = errorInputBorder;
           input.setCustomValidity('Хэш-тег не может быть длиннее 20 символов');
         } else {
